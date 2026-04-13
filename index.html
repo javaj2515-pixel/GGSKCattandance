@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Secure Attendance System</title>
+
+<style>
+body{font-family:Arial;margin:0;background:#f2f2f2}
+
+/* HEADER WITH COLLEGE IMAGE */
+header{
+    position:relative;
+    color:white;
+    padding:40px;
+    text-align:center;
+    background-image:url('https://www.ggskcbhagtabhaika.co.in/images/home/7.png');
+    background-size:cover;
+    background-position:center;
+}
+
+/* DARK OVERLAY FOR BETTER TEXT VISIBILITY */
+header::before{
+    content:"";
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.5);
+}
+
+header h1{
+    position:relative;
+    z-index:1;
+    text-shadow:2px 2px 4px #000;
+}
+
+nav{background:#34495e;text-align:center;padding:10px}
+nav button{margin:5px;padding:10px;color:white;background:#3498db;border:none;cursor:pointer}
+
+.section{display:none;padding:20px}
+.active{display:block}
+
+.box{background:white;padding:20px;margin:10px auto;width:90%}
+
+.btn{padding:8px 12px;margin:5px;border:none;color:white;cursor:pointer}
+.login{background:#3498db}
+.register{background:#27ae60}
+.forgot{background:#e67e22}
+
+.input{width:90%;padding:8px;margin:5px}
+
+.present{background:green;color:white}
+.absent{background:red;color:white}
+
+/* SLIDER */
+.slider{
+    width:90%;height:250px;margin:20px auto;
+    position:relative;overflow:hidden;border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.3);
+}
+
+.slide{position:absolute;width:100%;height:100%;display:none}
+
+.slide img{
+    width:100%;height:100%;object-fit:cover;border-radius:10px
+}
+
+.slideText{
+    position:absolute;bottom:10px;left:20px;
+    color:white;background:rgba(0,0,0,0.5);
+    padding:5px 10px;border-radius:5px
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Guru Gobind Singh Khalsa College Bhagta Bhai Ka</h1>
+</header>
+
+<nav>
+<button onclick="showSection('home')">Home</button>
+<button onclick="showSection('teacherSection')">Teacher</button>
+<button onclick="showSection('adminSection')">Admin</button>
+<button id="attendanceNav" style="display:none;" onclick="showAttendance()">Attendance</button>
+<button onclick="showReport()">Report</button>
+<button onclick="logout()">Logout</button>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="section active">
+<div class="slider">
+<div class="slide"><img src="https://shrckca.org/wp-content/uploads/2024/04/lib-scaled-1.jpg"><div class="slideText">Library</div></div>
+<div class="slide"><img src="https://scontent.fixc2-2.fna.fbcdn.net/v/t39.30808-6/498126873_4013396868876189_8822078282293563056_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=b895b5&_nc_ohc=on-YJLGGTbcQ7kNvwGs3s83&_nc_oc=AdpzRW_36sPhcL6Ew4Gd7D8VhgiIjyfOcrzZ2s2DkSLkVE_U25kCkvSbMMvWv6TWR9I&_nc_zt=23&_nc_ht=scontent.fixc2-2.fna&_nc_gid=0bUKw96oIXH3v5cC_2eQPA&_nc_ss=7a389&oh=00_Af0Usts_HizPZL0xjvaIfUvIeYKVwq5V8eCPqwwFFr2xaw&oe=69DA8C62"><div class="slideText">Ground</div></div>
+<div class="slide"><img src="https://scontent.fixc2-1.fna.fbcdn.net/v/t39.30808-6/496767837_4013585748857301_6193294715931308713_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=f798df&_nc_ohc=qcvQ6HyOuBsQ7kNvwHPN3Tg&_nc_oc=Ado-DE_5iZJDAHVKJdCzuDH10wy7uCa8m_bf-ZnQikyRK5xhYi-h7TCMuA656XGUXcg&_nc_zt=23&_nc_ht=scontent.fixc2-1.fna&_nc_gid=wV7ZfhbT3WpaOaNjlG99QQ&_nc_ss=7a389&oh=00_Af1ticvFlG9ubhwExTQd5Acf7p6tsxQJFR7IpLa6xXaUwA&oe=69DA8C40"><div class="slideText">Annual Athletic Meet</div></div>
+<div class="slide"><img src="https://scontent.fixc2-2.fna.fbcdn.net/v/t39.30808-6/560201202_1295137665749037_674075921416287381_n.jpg?stp=dst-jpg_s590x590_tt6&_nc_cat=110&ccb=1-7&_nc_sid=7b2446&_nc_ohc=dcsc5HNLfhYQ7kNvwG2TIk1&_nc_oc=Ado5o3ZahqWCYzCgbOxlMRW-GlQ2tZvugBVBFEufhwqFz17tyR5KtivURJGASkAAa5k&_nc_zt=23&_nc_ht=scontent.fixc2-2.fna&_nc_gid=dwEj2zK6Wx0rXR_DIkiDhw&_nc_ss=7a389&oh=00_Af1KARhzRIzoEMwEnYU6jYvTJM4s2Na-Sq-_BhxTIv5jeg&oe=69E265D2"><div class="slideText">Computer Department</div></div>
+<div class="slide"><img src="https://scontent.fixc2-1.fna.fbcdn.net/v/t39.30808-6/497688551_4012794288936447_3237430110893199454_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=f798df&_nc_ohc=jyiUww2TG6gQ7kNvwFtXjrW&_nc_oc=AdrKn_TtzItSXtI0fHoz3fRt50XHvZNlHRX2z64P17YDY-aBrLQApQBxxIHenhoonnE&_nc_zt=23&_nc_ht=scontent.fixc2-1.fna&_nc_gid=MTLgnOwXM1zT7t2-Nh3wcw&_nc_ss=7a389&oh=00_Af16Mw0Nzgwgb4DwPPFEExBOWuiYtevIPhyqS_yYJyIa4w&oe=69DAA960"><div class="slideText">seminar hall</div></div>
+</div>
+
+<div class="box">
+<h2>Home</h2>
+<p>Date: <span id="date"></span></p>
+</div>
+</div>
+
+<!-- TEACHER -->
+<div id="teacherSection" class="section">
+<div class="box">
+<h2>Teacher</h2>
+
+<input class="input" id="tuser" placeholder="Email/Phone"><br>
+<input class="input" type="password" id="tpass" placeholder="Password"><br>
+
+<select class="input" id="classSelect">
+<option value="">Select Class</option>
+<option value="BCA">BCA</option>
+<option value="BA">BA</option>
+</select>
+
+<select class="input" id="yearSelect">
+<option value="">Select Year</option>
+<option value="1">1st Year</option>
+<option value="2">2nd Year</option>
+<option value="3">3rd Year</option>
+</select>
+
+<button class="btn login" onclick="teacherLogin()">Login</button>
+<button class="btn register" onclick="teacherRegister()">Register</button>
+<button class="btn forgot" onclick="teacherForgot()">Forgot Password</button>
+
+<p id="tmsg"></p>
+</div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminSection" class="section">
+<div class="box">
+<h2>Admin Login</h2>
+
+<input class="input" id="auser" placeholder="Username"><br>
+<input class="input" type="password" id="apass" placeholder="Password"><br>
+
+<button class="btn login" onclick="adminLogin()">Login</button>
+<p id="amsg"></p>
+
+<div id="adminPending" style="margin-top:20px;"></div>
+</div>
+</div>
+
+<!-- ATTENDANCE -->
+<div id="attendance" class="section">
+<div class="box">
+<h2>Attendance (Teacher Only)</h2>
+
+<select class="input" id="attendanceClass" onchange="loadStudents()">
+<option value="">Select Class</option>
+<option value="BCA">BCA</option>
+<option value="BA">BA</option>
+</select>
+
+<select class="input" id="attendanceYear" onchange="loadStudents()">
+<option value="">Select Year</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+</select>
+
+<div id="studentList"></div>
+
+<br>
+<button onclick="saveAttendance()">Save</button>
+</div>
+</div>
+
+<!-- REPORT -->
+<div id="report" class="section">
+<div class="box">
+<h2>Attendance Report</h2>
+<div id="reportData"></div>
+</div>
+</div>
+
+<script>
+document.getElementById("date").innerHTML=new Date().toDateString();
+let currentUser=null;
+
+/* SLIDER */
+let slideIndex=0;
+function showSlides(){
+let slides=document.getElementsByClassName("slide");
+for(let i=0;i<slides.length;i++) slides[i].style.display="none";
+slideIndex++;
+if(slideIndex>slides.length) slideIndex=1;
+slides[slideIndex-1].style.display="block";
+setTimeout(showSlides,2000);
+}
+showSlides();
+
+/* NAV */
+function updateNav(){
+document.getElementById("attendanceNav").style.display=
+(currentUser && currentUser.role==="teacher")?"inline-block":"none";
+}
+
+/* TEACHER */
+function teacherRegister(){
+let user=tuser.value, pass=tpass.value;
+if(!user||!pass){ tmsg.innerHTML="Enter credentials!"; return; }
+localStorage.setItem("teacher_"+user,JSON.stringify({pass,role:"teacher",approved:false}));
+tmsg.innerHTML="Registered! Waiting for admin approval.";
+}
+
+function teacherLogin(){
+let user=tuser.value, pass=tpass.value;
+let cls=classSelect.value, year=yearSelect.value;
+if(!cls||!year){ tmsg.innerHTML="Select class and year!"; return; }
+
+let data=JSON.parse(localStorage.getItem("teacher_"+user));
+if(data && data.pass===pass){
+if(data.approved){
+currentUser={...data,class:cls,year:year};
+tmsg.innerHTML="Login Success!";
+updateNav(); showAttendance();
+}else tmsg.innerHTML="Pending approval!";
+}else tmsg.innerHTML="Wrong credentials!";
+}
+
+function teacherForgot(){alert("Not implemented");}
+
+/* ADMIN */
+function adminLogin(){
+if(auser.value==="admin" && apass.value==="1234"){
+currentUser={role:"admin"};
+amsg.innerHTML="Admin logged in!";
+updateNav(); showPendingTeachers();
+}else amsg.innerHTML="Wrong credentials!";
+}
+
+function showPendingTeachers(){
+let container=adminPending;
+container.innerHTML="<h3>Pending Teacher Approvals</h3>";
+for(let key in localStorage){
+if(key.startsWith("teacher_")){
+let t=JSON.parse(localStorage.getItem(key));
+if(!t.approved){
+let username=key.replace("teacher_","");
+container.innerHTML+=username+
+` <button onclick="approveTeacher('${username}')">Approve</button>
+<button onclick="rejectTeacher('${username}')">Reject</button><br>`;
+}}}
+}
+
+function approveTeacher(u){
+let t=JSON.parse(localStorage.getItem("teacher_"+u));
+t.approved=true;
+localStorage.setItem("teacher_"+u,JSON.stringify(t));
+showPendingTeachers();
+}
+
+function rejectTeacher(u){
+localStorage.removeItem("teacher_"+u);
+showPendingTeachers();
+}
+
+/* ATTENDANCE DATA */
+let studentsDB={
+"BCA":{"1":[{roll:101,name:"Aman"}],"2":[{roll:201,name:"Raj"}],"3":[{roll:301,name:"Gurpreet"}]},
+"BA":{"1":[{roll:11,name:"Deep"}],"2":[{roll:21,name:"Rohit"}],"3":[{roll:31,name:"Karan"}]}
+};
+
+function showAttendance(){
+if(!currentUser||currentUser.role!=="teacher"){alert("Only teachers");return;}
+showSection("attendance");
+attendanceClass.value=currentUser.class;
+attendanceYear.value=currentUser.year;
+loadStudents();
+}
+
+function loadStudents(){
+let cls=attendanceClass.value, year=attendanceYear.value;
+if(!cls||!year)return;
+
+let students=studentsDB[cls][year];
+let table="<table border='1'><tr><th>Roll</th><th>Name</th><th>Status</th></tr>";
+students.forEach(s=>{
+table+=`<tr><td>${s.roll}</td><td>${s.name}</td><td>Present</td></tr>`;
+});
+table+="</table>";
+studentList.innerHTML=table;
+}
+
+function saveAttendance(){alert("Saved!");}
+
+/* REPORT */
+function showReport(){showSection("report");}
+
+/* LOGOUT */
+function logout(){currentUser=null; alert("Logged out"); updateNav(); showSection("home");}
+
+/* SHOW */
+function showSection(id){
+let s=document.getElementsByClassName("section");
+for(let i=0;i<s.length;i++) s[i].classList.remove("active");
+document.getElementById(id).classList.add("active");
+}
+</script>
+
+</body>
+</html>
